@@ -1,17 +1,15 @@
 package com.example.demo.model;
 
-import java.util.Set;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -21,23 +19,27 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "containers")
+@Table(name = "products")
 @Getter
 @Setter
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class Containers {
+
+public class Products {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
-	@Column(name="id")
-	private Integer id ;
+	@Column(name = "id")
+	private Integer id;
 	
-	private String name ;
-	private String capacity ;
+	@Column(name = "name")
+	private String name ; 
+	private String content ; 
+	private Double price ;
+	private String unit ;
 	
-	@OneToMany(mappedBy = "container",cascade = CascadeType.ALL , orphanRemoval = true)
-	@JsonIgnore
-	private Set<Products> products;
+	@ManyToOne(fetch = FetchType.LAZY , cascade = CascadeType.ALL)
+	@JoinColumn(name = "container_id")
+	private Containers container ;
 }
